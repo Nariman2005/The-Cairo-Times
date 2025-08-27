@@ -26,13 +26,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.cocochanel.trial.LocalNavController
 import com.cocochanel.trial.R
+import com.cocochanel.trial.ui.theme.Typography
 
 @Composable
 fun LoginPage(
-    nav: NavController,
     viewModel: LoginPageViewModel = viewModel()
 ) {
+    val nav = LocalNavController.current
     val fontfamily = FontFamily(Font(R.font.my_custom_font))
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -44,6 +46,7 @@ fun LoginPage(
             text = "The Cairo Times",
             fontFamily = fontfamily,
             fontSize = 50.sp,
+            style = Typography.titleLarge,
             color = Color.Black
         )
 

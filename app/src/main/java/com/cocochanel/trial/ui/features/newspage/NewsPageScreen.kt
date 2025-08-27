@@ -1,12 +1,18 @@
 package com.cocochanel.trial.ui.features.newspage
 
 import android.net.Uri
+import android.util.Log
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.*
@@ -17,6 +23,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -24,33 +32,51 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.cocochanel.trial.data.model.Doc
 import coil.compose.AsyncImage
+import com.cocochanel.trial.LocalNavController
 import com.cocochanel.trial.R
 import com.google.gson.Gson
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NewsPageScreen(navController: NavController, viewModel: NewsViewModel = viewModel()) {
+fun NewsPageScreen(viewModel: NewsViewModel = viewModel()) {
     val fontfamily = FontFamily(Font(R.font.my_custom_font))
     val articles by viewModel.articles.collectAsState()
     val isLoading by viewModel.isLoading.collectAsState()
     val error by viewModel.error.collectAsState()
     val newsDesks by viewModel.newsDesks.collectAsState()
     val selectedNewsDesk by viewModel.selectedNewsDesk.collectAsState()
+    val navController = LocalNavController.current
 
     Column(modifier = Modifier.fillMaxSize()) {
-        // Header
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 50.dp, bottom = 16.dp),
-            contentAlignment = Alignment.TopCenter
+
+
+        Row(
+            modifier = Modifier.windowInsetsPadding(WindowInsets.safeDrawing)
+            ,
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Start
         ) {
-            Text(
-                "Cairo Times News",
-                fontSize = 35.sp,
-                fontFamily = fontfamily
-            )
+
+                Text(
+                    "Cairo Times News",
+                    fontSize = 35.sp,
+                    fontFamily = fontfamily,
+                    modifier = Modifier.weight(1f),
+                    textAlign = TextAlign.Center
+                )
+
+
+            IconButton(
+                onClick = { /* Handle search */ }
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Search,
+                    contentDescription = "Search",
+                    tint = Color.Black
+                )
+            }
         }
+
 
         // News Desk Navigation Bar
         if (newsDesks.isNotEmpty()) {
@@ -72,6 +98,7 @@ fun NewsPageScreen(navController: NavController, viewModel: NewsViewModel = view
                     }
                 }
             }
+
             error != null -> {
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -83,6 +110,7 @@ fun NewsPageScreen(navController: NavController, viewModel: NewsViewModel = view
                     }
                 }
             }
+
             articles.isEmpty() -> {
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -99,6 +127,7 @@ fun NewsPageScreen(navController: NavController, viewModel: NewsViewModel = view
                     }
                 }
             }
+
             else -> {
                 PullToRefreshBox(
                     isRefreshing = isLoading,
@@ -112,10 +141,17 @@ fun NewsPageScreen(navController: NavController, viewModel: NewsViewModel = view
                                 onClick = { selectedArticle ->
                                     val articleJson = Gson().toJson(selectedArticle)
                                     val encodedJson = Uri.encode(articleJson)
+                                    Log.e("NAVIAGTE", "NewsPageScreen: $encodedJson")
                                     navController.navigate("news_details/$encodedJson")
                                 }
                             )
-                            Spacer(modifier = Modifier.height(16.dp))
+//                            Spacer(modifier = Modifier.height(16.dp))
+                            // Black line separator
+                            HorizontalDivider(
+                                modifier = Modifier.padding(vertical = 8.dp, horizontal = 20.dp),
+                                thickness = 2.dp,
+                                color = Color.Black
+                            )
                         }
                     }
                 }
@@ -165,10 +201,10 @@ fun NewsDeskChip(
     Card(
         modifier = Modifier.clickable { onClick() },
         colors = CardDefaults.cardColors(
-            containerColor = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surface
+            containerColor = if (isSelected) Color.Black else MaterialTheme.colorScheme.surface
         ),
-        elevation = CardDefaults.cardElevation(defaultElevation = if (isSelected) 6.dp else 2.dp)
-    ) {
+
+        ) {
         Text(
             text = text,
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
@@ -180,60 +216,64 @@ fun NewsDeskChip(
 
 @Composable
 fun ArticleItem(article: Doc, onClick: (Doc) -> Unit) {
-    Card(
+
+    Column(
         modifier = Modifier
-            .fillMaxWidth()
-            .clickable { onClick(article) },
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
-    ) {
-        Column(modifier = Modifier.padding(16.dp)) {
-            // Article Image
-            val imageUrl = getArticleImageUrl(article)
-            if (imageUrl != null) {
-                AsyncImage(
-                    model = "https://static01.nyt.com/$imageUrl",
-                    contentDescription = "Article image",
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(200.dp)
-                        .clip(RoundedCornerShape(8.dp)),
-                    contentScale = ContentScale.Crop
-                )
-                Spacer(modifier = Modifier.height(12.dp))
-            }
-
-            // Article Title
-            Text(
-                text = article.headline.main,
-                style = MaterialTheme.typography.headlineSmall,
-                maxLines = 2,
-                overflow = TextOverflow.Ellipsis
+            .padding(16.dp)
+            .clickable(true) { onClick(article) }) {
+        // Article Image
+        val imageUrl = getArticleImageUrl(article)
+        if (imageUrl != null) {
+            AsyncImage(
+                model = "https://static01.nyt.com/$imageUrl",
+                contentDescription = "Article image",
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(200.dp)
+                    .clip(RoundedCornerShape(8.dp)),
+                contentScale = ContentScale.Crop
             )
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            // Article Abstract
-            if (article.`abstract`.isNotBlank()) {
-                Text(
-                    text = article.`abstract`,
-                    style = MaterialTheme.typography.bodyMedium,
-                    maxLines = 3,
-                    overflow = TextOverflow.Ellipsis
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-            }
-
-            // Article Metadata including news_desk
-            Text(
-                text = "${article.byline.original} • ${article.news_desk} • ${article.section_name}",
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
-            )
+            Spacer(modifier = Modifier.height(12.dp))
         }
+        val fontFamily = FontFamily(Font(resId = R.font.fanwood_text))
+        // Article Title
+        Text(
+            text = article.headline.main,
+            style = MaterialTheme.typography.headlineSmall,
+            maxLines = 2,
+            fontFamily = fontFamily,
+            fontWeight = FontWeight.SemiBold
+//
+        )
+
+        Spacer(modifier = Modifier.height(8.dp))
+        val fontFamily2 = FontFamily(Font(resId = R.font.frank_ruhl_libre_semibold))
+        // Article Abstract
+        if (article.`abstract`.isNotBlank()) {
+            Text(
+                text = article.`abstract`,
+                style = MaterialTheme.typography.bodyMedium,
+                maxLines = 3,
+
+                color = Color.Gray,
+                overflow = TextOverflow.Ellipsis,
+                fontFamily = fontFamily2,
+                fontSize = 16.sp
+
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+        }
+
+        // Article Metadata including news_desk
+        Text(
+            text = "${article.byline.original} • ${article.news_desk} • ${article.section_name}",
+            fontSize = 12.sp,
+            color = Color.Black,
+            maxLines = 1,
+        )
     }
 }
+//}
 
 fun getArticleImageUrl(article: Doc): String? {
     val multimedia = article.multimedia

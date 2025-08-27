@@ -8,9 +8,12 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ButtonElevation
@@ -31,14 +34,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.cocochanel.trial.LocalNavController
 import com.cocochanel.trial.R
 import kotlinx.coroutines.delay
 
 @Composable
 fun CairoTimesLanding(
-    nav: NavController,
     viewModel: LandingPageViewModel = viewModel()
 ) {
+    val nav = LocalNavController.current
     val fontfamily = FontFamily(Font(R.font.my_custom_font))
     val offsetY by animateDpAsState(
         targetValue = if (viewModel.startAnimation) 80.dp else 100.dp,
@@ -57,10 +61,10 @@ fun CairoTimesLanding(
             modifier = Modifier.fillMaxSize()
         ) {
             Image(
+                modifier = Modifier.fillMaxSize(),
                 painter = painterResource(id = R.drawable.image7),
                 contentDescription = null,
-                contentScale = ContentScale.Crop,
-                modifier = Modifier.fillMaxSize()
+                contentScale = ContentScale.Crop
             )
         }
 

@@ -16,12 +16,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
+import com.cocochanel.trial.LocalNavController
 import com.cocochanel.trial.data.model.Doc
 import com.google.gson.Gson
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun newsdetailsScreen(navController: NavController, articleJson: String) {
+fun newsdetailsScreen( articleJson: String) {
+
+    val navController = LocalNavController.current
     val article = remember { Gson().fromJson(articleJson, Doc::class.java) }
     val uriHandler = LocalUriHandler.current
 
@@ -30,15 +33,15 @@ fun newsdetailsScreen(navController: NavController, articleJson: String) {
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ) {
-        // Top Bar
-        TopAppBar(
-            title = { Text("Article Details") },
-            navigationIcon = {
-                IconButton(onClick = { navController.navigateUp() }) {
-                    Icon(Icons.Default.ArrowBack, contentDescription = "Back")
-                }
-            }
-        )
+//        // Top Bar
+//        TopAppBar(
+//            title = { Text("Article Details") },
+//            navigationIcon = {
+//                IconButton(onClick = { navController.navigateUp() }) {
+//                    Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+//                }
+//            }
+//        )
 
         // Article Content
         Column(modifier = Modifier.padding(16.dp)) {
