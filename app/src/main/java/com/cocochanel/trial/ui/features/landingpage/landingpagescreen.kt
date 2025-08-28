@@ -84,23 +84,5 @@ fun CairoTimesLanding(
             )
         }
 
-        // Login button
-        AnimatedVisibility(
-            visible = viewModel.showLogin,
-            enter = fadeIn(),
-            modifier = Modifier.align(Alignment.Center)
-        ) {
-//            Button(
-//                onClick = { nav.navigate("page2") },
-//                modifier = Modifier.size(width = 200.dp, height = 80.dp),
-//                shape = RectangleShape,
-//                colors = ButtonDefaults.buttonColors(
-//                    containerColor = Color.White,
-//                    contentColor = Color.Black
-//                )
-//            ) {
-//                Text("Login", fontSize = 20.sp)
-//            }
-        }
     }
 }

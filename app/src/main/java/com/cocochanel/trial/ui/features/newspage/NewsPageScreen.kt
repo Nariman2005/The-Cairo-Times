@@ -48,8 +48,7 @@ fun NewsPageScreen(viewModel: NewsViewModel = viewModel()) {
     val navController = LocalNavController.current
 
     Column(modifier = Modifier.fillMaxSize()) {
-
-
+        // Top App Bar
         Row(
             modifier = Modifier.windowInsetsPadding(WindowInsets.safeDrawing)
             ,
@@ -89,6 +88,7 @@ fun NewsPageScreen(viewModel: NewsViewModel = viewModel()) {
             )
         }
 
+        // Content
         when {
             isLoading -> {
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
@@ -104,7 +104,8 @@ fun NewsPageScreen(viewModel: NewsViewModel = viewModel()) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         Text("Error: $error")
                         Spacer(modifier = Modifier.height(16.dp))
-                        Button(onClick = { viewModel.fetchArticles() }) {
+                        Button(
+                            onClick = { viewModel.fetchArticles() }) {
                             Text("Retry")
                         }
                     }
@@ -142,11 +143,10 @@ fun NewsPageScreen(viewModel: NewsViewModel = viewModel()) {
                                     val articleJson = Gson().toJson(selectedArticle)
                                     val encodedJson = Uri.encode(articleJson)
                                     Log.e("NAVIAGTE", "NewsPageScreen: $encodedJson")
-                                    navController.navigate("news_details/$encodedJson")
+                                    navController.navigate("newsdetailsScreen/$encodedJson")
                                 }
                             )
-//                            Spacer(modifier = Modifier.height(16.dp))
-                            // Black line separator
+//
                             HorizontalDivider(
                                 modifier = Modifier.padding(vertical = 8.dp, horizontal = 20.dp),
                                 thickness = 2.dp,
@@ -160,6 +160,9 @@ fun NewsPageScreen(viewModel: NewsViewModel = viewModel()) {
     }
 }
 
+
+
+   // News Desk Navigation Bar
 @Composable
 fun NewsDeskNavigationBar(
     selectedNewsDesk: String?,
@@ -208,12 +211,13 @@ fun NewsDeskChip(
         Text(
             text = text,
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
-            color = if (isSelected) Color.White else MaterialTheme.colorScheme.onSurface,
-            style = MaterialTheme.typography.bodyMedium
+            color = if (isSelected) Color.White else MaterialTheme.colorScheme.onSurface
         )
     }
 }
 
+
+// Single Article Item
 @Composable
 fun ArticleItem(article: Doc, onClick: (Doc) -> Unit) {
 
@@ -221,6 +225,7 @@ fun ArticleItem(article: Doc, onClick: (Doc) -> Unit) {
         modifier = Modifier
             .padding(16.dp)
             .clickable(true) { onClick(article) }) {
+
         // Article Image
         val imageUrl = getArticleImageUrl(article)
         if (imageUrl != null) {
@@ -243,10 +248,12 @@ fun ArticleItem(article: Doc, onClick: (Doc) -> Unit) {
             maxLines = 2,
             fontFamily = fontFamily,
             fontWeight = FontWeight.SemiBold
-//
+
         )
 
         Spacer(modifier = Modifier.height(8.dp))
+
+
         val fontFamily2 = FontFamily(Font(resId = R.font.frank_ruhl_libre_semibold))
         // Article Abstract
         if (article.`abstract`.isNotBlank()) {
@@ -254,7 +261,6 @@ fun ArticleItem(article: Doc, onClick: (Doc) -> Unit) {
                 text = article.`abstract`,
                 style = MaterialTheme.typography.bodyMedium,
                 maxLines = 3,
-
                 color = Color.Gray,
                 overflow = TextOverflow.Ellipsis,
                 fontFamily = fontFamily2,
@@ -273,7 +279,10 @@ fun ArticleItem(article: Doc, onClick: (Doc) -> Unit) {
         )
     }
 }
-//}
+
+
+
+
 
 fun getArticleImageUrl(article: Doc): String? {
     val multimedia = article.multimedia

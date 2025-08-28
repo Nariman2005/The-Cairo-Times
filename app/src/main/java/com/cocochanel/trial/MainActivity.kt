@@ -38,7 +38,6 @@ val LocalNavController = compositionLocalOf<NavController> { error("No NAv Con")
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        enableEdgeToEdge()
         setContent {
 
             TrialTheme {
@@ -73,7 +72,7 @@ private fun MainContent() {
                 NewsPageScreen()
             }// Add this route to your NavHost
             composable(
-                route = "news_details/{articleJson}",
+                route = "newsdetailsScreen/{articleJson}",
                 arguments = listOf(navArgument("articleJson") { type = NavType.StringType })
             ) { backStackEntry ->
                 val articleJson = backStackEntry.arguments?.getString("articleJson") ?: ""

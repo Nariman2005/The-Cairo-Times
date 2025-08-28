@@ -16,9 +16,6 @@ class NewsRepository {
     }.apply {
         level = HttpLoggingInterceptor.Level.BODY
     }
-    val okHttpClient = OkHttpClient.Builder()
-        .readTimeout(30, TimeUnit.SECONDS) // Default is usually 10 seconds
-        .build()
     private val client = OkHttpClient.Builder()
         .addInterceptor(loggingInterceptor)
         .build()

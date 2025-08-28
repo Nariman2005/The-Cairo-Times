@@ -48,7 +48,4 @@ class LoginPageViewModel : ViewModel() {
         }
     }
 
-    fun clearError() {
-        errorMessage = null
-    }
 }
