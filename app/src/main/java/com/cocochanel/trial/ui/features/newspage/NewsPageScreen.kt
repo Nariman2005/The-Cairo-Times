@@ -65,15 +65,15 @@ fun NewsPageScreen(viewModel: NewsViewModel = viewModel()) {
                 )
 
 
-            IconButton(
-                onClick = { /* Handle search */ }
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Search,
-                    contentDescription = "Search",
-                    tint = Color.Black
-                )
-            }
+//            IconButton(
+//                onClick = { /* Handle search */ }
+//            ) {
+//                Icon(
+//                    imageVector = Icons.Default.Search,
+//                    contentDescription = "Search",
+//                    tint = Color.Black
+//                )
+//            }
         }
 
 
