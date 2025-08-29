@@ -2,6 +2,7 @@ package com.cocochanel.trial.data.repository
 
 
 import android.util.Log
+import com.cocochanel.trial.BuildConfig
 import com.cocochanel.trial.data.api.NYTimesApiService
 import com.cocochanel.trial.data.model.Doc
 import retrofit2.Retrofit
@@ -31,7 +32,7 @@ class NewsRepository {
         return try {
             Log.d("NewsRepository", "Making API call to NY Times")
             val response = api.getArticles(
-                apiKey = "WUnPGjGyVAPmdhYrBlB36q8I61cnBOw1"
+                apiKey = BuildConfig.NYTIMES_API_KEY
             )
             Log.d("NewsRepository", "API call successful. Articles count: ${response.response.docs.size}")
             response.response.docs
