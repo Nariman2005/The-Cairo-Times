@@ -53,7 +53,7 @@ fun newsdetailsScreen( articleJson: String) {
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
-            // .padding(16.dp) // Removed padding from here
+
     ) {
 
 
@@ -90,7 +90,7 @@ fun newsdetailsScreen( articleJson: String) {
         )
     }else{
         AsyncImage(
-            model = R.drawable.error, // your drawable
+            model = R.drawable.error,
             contentDescription = "No image available",
             modifier = Modifier
                 .fillMaxWidth()

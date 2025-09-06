@@ -30,6 +30,7 @@ import com.cocochanel.trial.ui.features.landingpage.CairoTimesLanding
 import com.cocochanel.trial.ui.features.loginpage.LoginPage
 import com.cocochanel.trial.ui.features.newsdetails.newsdetailsScreen
 import com.cocochanel.trial.ui.features.newspage.NewsPageScreen
+import com.cocochanel.trial.ui.features.searchpage.Searchpage
 import com.cocochanel.trial.ui.theme.TrialTheme
 
 
@@ -77,6 +78,10 @@ private fun MainContent() {
             ) { backStackEntry ->
                 val articleJson = backStackEntry.arguments?.getString("articleJson") ?: ""
                 newsdetailsScreen(articleJson)
+            }
+
+            composable("page4") {
+                Searchpage()
             }
         }
     }

@@ -50,7 +50,6 @@ fun CairoTimesLanding(
 
     LaunchedEffect(Unit) {
         delay(5000L)
-
         nav.navigate("page2")
     }
     Box(modifier = Modifier.fillMaxSize()) {
@@ -68,7 +67,6 @@ fun CairoTimesLanding(
             )
         }
 
-        // Title (removed fontFamily completely)
         Box(
             modifier = Modifier
                 .fillMaxSize()
