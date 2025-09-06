@@ -69,17 +69,16 @@ private fun MainContent() {
             composable("page2") {
                 LoginPage()
             }
-            composable("page3") {
+            composable("page3"){
                 NewsPageScreen()
-            }// Add this route to your NavHost
-            composable(
-                route = "newsdetailsScreen/{articleJson}",
-                arguments = listOf(navArgument("articleJson") { type = NavType.StringType })
-            ) { backStackEntry ->
-                val articleJson = backStackEntry.arguments?.getString("articleJson") ?: ""
-                newsdetailsScreen(articleJson)
             }
-
+            composable(
+                route = "newsdetailsScreen/{articleIndex}",
+                arguments = listOf(navArgument("articleIndex") { type = NavType.IntType })
+            ) { backStackEntry ->
+                val articleIndex = backStackEntry.arguments?.getInt("articleIndex") ?: 0
+                newsdetailsScreen(articleIndex = articleIndex)
+            }
             composable("page4") {
                 Searchpage()
             }
